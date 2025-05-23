@@ -1,0 +1,46 @@
+<h2><%= @restaurant.name %></h2>
+<p><strong>Address:</strong> <%= @restaurant.address %></p>
+<p><strong>Category:</strong> <%= @restaurant.category %></p>
+
+<hr>
+
+<h3>Add a Review</h3>
+
+<%= form_with(model: [@restaurant, @review], local: true) do |form| %>
+  <% if @review.errors.any? %>
+    <div class="alert alert-danger">
+      <h4>There were some errors:</h4>
+      <ul>
+        <% @review.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="mb-3">
+    <%= form.label :content, class: "form-label" %>
+    <%= form.text_area :content, class: "form-control" %>
+  </div>
+
+  <div class="mb-3">
+    <%= form.label :rating, class: "form-label" %>
+    <%= form.number_field :rating, in: 0..5, step: 1, class: "form-control" %>
+  </div>
+
+  <%= form.submit "Submit Review", class: "btn btn-primary" %>
+<% end %>
+
+<hr>
+<h3>Reviews</h3>
+
+<% @restaurant.reviews.each do |review| %>
+  <div class="card mb-3">
+    <div class="card-body">
+      <h5 class="card-title">Rating: <%= review.rating %> ⭐</h5>
+      <p class="card-text"><%= review.content %></p>
+      <p class="card-text"><small class="text-muted">Posted on <%= review.created_at.strftime("%b %d, %Y") %></small></p>
+    </div>
+  </div>
+<% end %>
+
